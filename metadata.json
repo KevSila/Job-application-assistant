@@ -1,0 +1,5 @@
+{
+  "name": "AI Career Architect",
+  "description": "Professional job application tool that generates tailored CVs and cover letters using Gemini AI based on your unique profile and job descriptions.",
+  "requestFramePermissions": []
+}
