@@ -8,8 +8,6 @@ import {
   Sparkles,
   ClipboardCheck,
   Target,
-  GraduationCap,
-  Award,
   Globe,
   Printer,
   FileCode,
@@ -183,9 +181,18 @@ const App: React.FC = () => {
       }
       setStatusMessage("Extracting transferable skills...");
       const docs = await generateCareerDocuments(profile, jobDescription, info);
-      setResults({ cv: docs.cv || "", coverLetter: docs.coverLetter || "", companyResearch: info });
-    } catch (e) { setStatusMessage("Generation failed."); }
-    finally { setIsGenerating(false); setStatusMessage(""); }
+      setResults({ 
+        cv: docs.cv || "", 
+        coverLetter: docs.coverLetter || "", 
+        companyResearch: info 
+      });
+    } catch (e) { 
+      console.error(e);
+      setStatusMessage("Generation failed."); 
+    } finally { 
+      setIsGenerating(false); 
+      setStatusMessage(""); 
+    }
   };
 
   const handleGenerateQA = async () => {
@@ -195,8 +202,12 @@ const App: React.FC = () => {
     try {
       const answers = await answerApplicationQuestions(profile, jobDescription, appQuestions);
       setQaResults(answers);
-    } catch (e) { alert("QA Generation failed."); }
-    finally { setIsGeneratingQA(false); }
+    } catch (e) { 
+      console.error(e);
+      alert("QA Generation failed."); 
+    } finally { 
+      setIsGeneratingQA(false); 
+    }
   };
 
   const copyRich = async (markdown: string) => {
@@ -218,13 +229,18 @@ const App: React.FC = () => {
     const blob = new Blob(['\ufeff', source], { type: 'application/msword' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url; a.download = `${filename}.doc`; a.click();
+    a.href = url; 
+    a.download = `${filename}.doc`; 
+    a.click();
     URL.revokeObjectURL(url);
   };
 
   const handlePrint = (content: string) => {
     const pr = document.getElementById('print-root');
-    if (pr) { pr.innerHTML = `<div class="prose-doc p-12">${marked(content)}</div>`; window.print(); }
+    if (pr) { 
+      pr.innerHTML = `<div class="prose-doc p-12">${marked(content)}</div>`; 
+      window.print(); 
+    }
   };
 
   return (
@@ -242,7 +258,11 @@ const App: React.FC = () => {
               { id: 'documents', icon: <FileText />, label: 'Documents' },
               { id: 'qa', icon: <MessageSquareText />, label: 'Q&A' }
             ].map(t => (
-              <button key={t.id} onClick={() => setActiveTab(t.id as TabType)} className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-2 ${activeTab === t.id ? 'bg-indigo-50 text-indigo-700' : 'text-slate-500 hover:bg-slate-100'}`}>
+              <button 
+                key={t.id} 
+                onClick={() => setActiveTab(t.id as TabType)} 
+                className={`px-4 py-2 rounded-lg text-xs font-bold transition-all flex items-center gap-2 ${activeTab === t.id ? 'bg-indigo-50 text-indigo-700' : 'text-slate-500 hover:bg-slate-100'}`}
+              >
                 {React.cloneElement(t.icon as React.ReactElement, { className: 'w-4 h-4' })}
                 <span className="hidden md:inline">{t.label}</span>
               </button>
@@ -257,11 +277,28 @@ const App: React.FC = () => {
             <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
               <h2 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2 text-indigo-600"><User /> Profile Information</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-1"><label className="text-[10px] font-black text-slate-400 uppercase">Name</label><input value={profile.fullName} onChange={e => saveProfile({...profile, fullName: e.target.value})} className="w-full px-4 py-2 rounded-lg bg-slate-50 border border-slate-200" /></div>
-                <div className="space-y-1"><label className="text-[10px] font-black text-slate-400 uppercase">Email</label><input value={profile.email} onChange={e => saveProfile({...profile, email: e.target.value})} className="w-full px-4 py-2 rounded-lg bg-slate-50 border border-slate-200" /></div>
-                <div className="md:col-span-2 space-y-1"><label className="text-[10px] font-black text-slate-400 uppercase">Summary</label><textarea value={profile.summary} rows={4} onChange={e => saveProfile({...profile, summary: e.target.value})} className="w-full px-4 py-2 rounded-lg bg-slate-50 border border-slate-200" /></div>
+                <div className="space-y-1"><label className="text-[10px] font-black text-slate-400 uppercase">Name</label><input value={profile.fullName} onChange={e => saveProfile({...profile, fullName: e.target.value})} className="w-full px-4 py-2 rounded-lg bg-slate-50 border border-slate-200 outline-none" /></div>
+                <div className="space-y-1"><label className="text-[10px] font-black text-slate-400 uppercase">Email</label><input value={profile.email} onChange={e => saveProfile({...profile, email: e.target.value})} className="w-full px-4 py-2 rounded-lg bg-slate-50 border border-slate-200 outline-none" /></div>
+                <div className="md:col-span-2 space-y-1"><label className="text-[10px] font-black text-slate-400 uppercase">Summary</label><textarea value={profile.summary} rows={4} onChange={e => saveProfile({...profile, summary: e.target.value})} className="w-full px-4 py-2 rounded-lg bg-slate-50 border border-slate-200 outline-none" /></div>
               </div>
             </div>
+            
+            <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
+              <h2 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2 text-indigo-600"><History /> Professional History</h2>
+              <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2">
+                {profile.experiences.map((exp, i) => (
+                  <div key={i} className="p-4 rounded-xl border border-slate-100 bg-slate-50/50">
+                    <div className="flex justify-between items-start">
+                      <h4 className="font-bold text-slate-800">{exp.title}</h4>
+                      <span className="text-[10px] font-bold text-slate-400 uppercase">{exp.startDate} - {exp.endDate}</span>
+                    </div>
+                    <p className="text-xs font-semibold text-indigo-600">{exp.company}</p>
+                    <p className="text-xs text-slate-500 mt-1 line-clamp-2">{exp.description}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             <div className="bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
               <h2 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2 text-indigo-600"><Layout /> Toolstack</h2>
               <div className="flex flex-wrap gap-2">
@@ -332,13 +369,13 @@ const App: React.FC = () => {
             )}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {[
-                { title: 'Tailored CV', content: results.cv, color: 'indigo', icon: <FileText /> },
-                { title: 'Cover Letter', content: results.coverLetter, color: 'violet', icon: <FileCode /> }
+                { title: 'Tailored CV', content: results.cv, color: 'indigo', icon: <FileText className="w-5 h-5" /> },
+                { title: 'Cover Letter', content: results.coverLetter, color: 'violet', icon: <FileCode className="w-5 h-5" /> }
               ].map((doc, idx) => (
                 <div key={idx} className="bg-white rounded-3xl border border-slate-200 shadow-xl flex flex-col h-[900px] overflow-hidden">
                   <div className="p-5 border-b border-slate-100 flex items-center justify-between bg-white sticky top-0 z-10">
                     <div className="flex items-center gap-3">
-                      <div className={`bg-${doc.color}-600 p-2 rounded-xl text-white`}>{React.cloneElement(doc.icon as React.ReactElement, { className: 'w-5 h-5' })}</div>
+                      <div className={`bg-${doc.color}-600 p-2 rounded-xl text-white`}>{doc.icon}</div>
                       <span className="font-black text-slate-800 uppercase tracking-tight">{doc.title}</span>
                     </div>
                   </div>
