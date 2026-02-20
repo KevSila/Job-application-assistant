@@ -8,11 +8,21 @@ const SYSTEM_INSTRUCTION = `
 You are the "Kevsila Career Architect," an elite AI Career Coach and ATS Specialist. 
 Your mission is to help Kevin Yumbya Sila secure high-impact roles in Tech and Digital Media.
 
+PORTFOLIO LINKS:
+- Main Portfolio: https://kevsilaportfolio.netlify.app
+- Author Hub & Books: https://kevsilabooks.netlify.app
+- UI/UX & Design Hub: https://kevsiladesigns.netlify.app
+- GitHub: https://github.com/KevSila
+
 STRATEGIC DIRECTIVES:
 1. TRANSFERABLE SKILLS: Kevin has a diverse background (Mathematics, CS, Research, Leadership, Tutoring). ALWAYS find transferable skills across his entire history.
-2. TOOLSET MASTERY: Emphasize ODK, Google/Microsoft Forms, Google AI Studio, CrewAI, Manus, Opal by Google, Trello, and transcription skills.
-3. CONTEXTUAL ANSWERS: When answering application questions, align answers with the specific Job Description (JD) while staying 100% truthful to Kevin's profile.
-4. FORMATTING: Use Markdown. Bold (**) for emphasis, lists (-) for clarity.
+2. TOOLSET MASTERY: Emphasize ODK, Google/Microsoft Forms, Google AI Studio, CrewAI, Manus, Opal by Google, Trello, and transcription skills. Highlight his proficiency in AI integration and WhatsApp sales funnels.
+3. PROJECT CLARITY: The staff management system is called "Staff Portal Project". Note that it was a PERSONAL PROJECT. Highlight "AI Job Application Assistant" and "AI Audio Generator" as key AI projects.
+4. PUBLISHED AUTHOR: Highlight his books: "Attention by Design" (Psychology & Social Analysis) and "The Firelit Mind" (Culture & Philosophy).
+5. K-SILA SERVICES: Mention his freelance work at K-Sila Services where he automates SMEs through AI and digital strategy.
+6. ATS OPTIMIZATION: Documents must be ATS-friendly, keyword-rich based on the JD, truthful, and relevant. 
+7. TONE: Detailed yet direct. Professional but with personality.
+8. FORMATTING: Use clean Markdown.
 `;
 
 export const researchCompany = async (companyName: string): Promise<string> => {
@@ -56,8 +66,10 @@ export const generateCareerDocuments = async (
     JD: ${jobDescription}
     RESEARCH: ${companyResearch || 'N/A'}
 
-    CV REQS: Standard sections + REFERENCES (Available upon request). Highlight AI tools (CrewAI, ODK, etc.).
-    COVER LETTER REQS: Start with ${currentDate}. Reference portfolio: Https://kevsilaservices.netlify.app.
+    REQUIREMENTS:
+    1. CV: Generate an ATS-friendly, keyword-rich CV. Include standard sections (Contact, Summary, Experience, Education, Projects, Skills, Languages, References). Use the provided references. Ensure keywords from the JD are naturally woven in.
+    2. COVER LETTER: Start with ${currentDate}. Reference portfolio links: https://kevsilaportfolio.netlify.app (Main) and https://kevsilabooks.netlify.app (Author Hub). Address the JD requirements directly and passionately.
+    3. FORMATTING: Return the CV under a heading "[SECTION: CV]" and the Cover Letter under "[SECTION: COVER LETTER]".
   `;
 
   try {
@@ -97,8 +109,9 @@ export const answerApplicationQuestions = async (
 
     TASK:
     Answer these application questions professionally. 
-    - Use specific examples from the candidate's history (e.g., UNAIDS Cluster Lead role, Equavo Ltd management, Maisha Youth IT lead).
+    - Use specific examples from history (e.g., UNAIDS Cluster Lead role, Equavo Ltd management, Maisha Youth IT lead).
     - Mention technical skills like ODK, Laravel, SQL, and AI workflow tools.
+    - Reference projects generally, mentioning the GitHub repository (https://github.com/KevSila).
     - Provide the answers in a clean Markdown format.
   `;
 

@@ -23,6 +23,14 @@ export interface Project {
   tags: string[];
 }
 
+export interface Reference {
+  name: string;
+  title: string;
+  organization: string;
+  email: string;
+  phone: string;
+}
+
 export interface UserProfile {
   fullName: string;
   email: string;
@@ -36,6 +44,8 @@ export interface UserProfile {
   achievements: string[];
   certifications: string[];
   projects: Project[];
+  languages?: string[];
+  references?: Reference[];
 }
 
 export interface GenerationResult {
